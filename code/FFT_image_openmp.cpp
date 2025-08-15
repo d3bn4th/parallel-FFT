@@ -223,7 +223,7 @@ void compress_image(vector<vector<uint8_t>> &image, double threshold, int verbos
     {
         for (int j = 0; j < complex_image[0].size(); j++)
         {
-            maximum_value = max(maximum_value, abs(complex_image[i][j]));
+            maximum_value = max(maximum_value, (double)abs(complex_image[i][j]));
         }
     }
     

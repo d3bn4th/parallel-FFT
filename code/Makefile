@@ -2,20 +2,21 @@
 # Compatible with macOS
 
 # Compiler settings
-CXX = g++
-CXXFLAGS = -std=c++11 -O3 -fopenmp
-OPENCV_FLAGS = $(shell pkg-config --cflags --libs opencv4 2>/dev/null || pkg-config --cflags --libs opencv)
+CXX = clang++
+CXXFLAGS = -std=c++11 -O3 -Xpreprocessor -fopenmp -I/opt/homebrew/opt/libomp/include -L/opt/homebrew/opt/libomp/lib -lomp
+OPENCV_FLAGS = -I/opt/homebrew/opt/opencv/include/opencv4 -L/opt/homebrew/opt/opencv/lib -lopencv_core -lopencv_imgproc -lopencv_imgcodecs -lopencv_highgui
+LDFLAGS = -lm
 
 # Default target
 all: fft_image_openmp fft_mult_openmp
 
 # OpenMP Image Compression
 fft_image_openmp: FFT_image_openmp.cpp
-	$(CXX) $(CXXFLAGS) -o fft_image_openmp FFT_image_openmp.cpp $(OPENCV_FLAGS)
+	$(CXX) $(CXXFLAGS) -o fft_image_openmp FFT_image_openmp.cpp $(OPENCV_FLAGS) $(LDFLAGS) -lstdc++
 
 # OpenMP Polynomial Multiplication
 fft_mult_openmp: FFT_multiplication_openmp.cpp
-	$(CXX) $(CXXFLAGS) -o fft_mult_openmp FFT_multiplication_openmp.cpp $(OPENCV_FLAGS)
+	$(CXX) $(CXXFLAGS) -o fft_mult_openmp FFT_multiplication_openmp.cpp $(OPENCV_FLAGS) $(LDFLAGS)
 
 # Original CUDA versions (for reference)
 fft_image_cuda: FFT_image.cu
